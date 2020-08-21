@@ -21,18 +21,23 @@ body {
 }
 
 .movie {
-  background: black;
-  width: 100%;
-  height: 400px;
+  /* background:
+    url("http://finalbossblues.com/wp-content/uploads/2013/12/walk4.gif") 0 0 no-repeat; */
+  background:
+    url("https://image.shutterstock.com/image-vector/girl-walk-cycle-sprite-sheet-260nw-738668026.jpg") 0 0 no-repeat;
+  height: 100px;
+  width: 80px;
+  background-position-x: 0px;
+  margin: 100px auto;
 }
 .movie.play {
-  animation: move-movie 5s infinite;
+  animation: move-movie 1s steps(9) infinite;
 }
 @keyframes move-movie {
-  0%, 100% {
-    background: blue;
+  from {
+    background-position-x: 0px;
   }
-  50% {
-    background: pink;
+  to {
+    background-position-x: -722px;
   }
 }

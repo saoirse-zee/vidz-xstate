@@ -77,7 +77,7 @@ fromEvent(document, "mousemove")
   })
 
 state$.subscribe(state => {
-  document.getElementById("state").innerHTML = JSON.stringify(state.value)
+  // document.getElementById("state").innerHTML = JSON.stringify(state.value)
   if (state.matches("controlsVisibility.hidden")) {
     document.querySelector(".controls").classList.add("hidden")
   } else {
