@@ -1,31 +1,62 @@
-import { fromEvent } from "rxjs";
 import { Machine, interpret } from "xstate";
+import { from, fromEvent } from 'rxjs';
 import "./styles.css";
 
-import { from } from "rxjs";
-
-const machine = Machine({
-  initial: "red",
+const uiMachine = Machine({
+  id: "ui",
+  type: "parallel",
   states: {
-    green: { TOGGLE: "red" },
-    red: { TOGGLE: "green" }
+    controlsVisible: {},
+  }
+})
+
+const controlsMachine = Machine({
+  id: 'controls',
+  initial: 'paused',
+  states: {
+    paused: {
+      on: {
+        press_play: 'playing',
+        keydown: {
+          target: 'playing',
+          cond: 'isSpacebar'
+        }
+      }
+    },
+    playing: {
+      on: {
+        press_pause: 'paused',
+        keydown: {
+          target: 'paused',
+          cond: 'isSpacebar'
+        }
+      }
+    },
+  }
+}, 
+{
+  guards: {
+    isSpacebar: (ctx, event) => event.code === "Space"
   }
 });
-const service = interpret(machine).start();
 
-// const state$ = from(service);
+const service = interpret(controlsMachine)
+const state$ = from(service);
+service.start();
 
-// state$.subscribe((state) => {
-//   console.log(state.value);
-// });
-
-// document.getElementById("app").innerHTML = `
-// hi
-// `;
-console.log(service.state.value);
-service.send("TOGGLE");
-console.log(service.state.value);
-
-fromEvent(document, "click").subscribe(() => {
-  service.send("TOGGLE");
+fromEvent(document.getElementById("play"), 'click').subscribe(() => {
+  service.send("press_play")
 });
+fromEvent(document.getElementById("pause"), 'click').subscribe(() => {
+  service.send("press_pause")
+});
+
+fromEvent(document, "keydown")
+  .subscribe((e) => {
+    service.send(e)
+  })
+
+state$.subscribe(state => {
+  document.getElementById("state").innerHTML = state.value
+});
+
