@@ -85,8 +85,12 @@ state$.subscribe(state => {
   }
   if (state.matches("controls.playing")) {
     document.querySelector(".movie").classList.add("play")
+    document.querySelector("#play").setAttribute("disabled", true)
+    document.querySelector("#pause").removeAttribute("disabled")
   } else {
     document.querySelector(".movie").classList.remove("play")
+    document.querySelector("#pause").setAttribute("disabled", true)
+    document.querySelector("#play").removeAttribute("disabled")
   }
 });
 
