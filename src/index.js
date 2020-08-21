@@ -3,7 +3,7 @@ import { from, fromEvent } from 'rxjs';
 import "./styles.css";
 
 const controlsStates = {
-  id: 'controls',
+  id: 'controlsStates',
   initial: 'paused',
   states: {
     paused: {
@@ -32,7 +32,7 @@ const uiMachine = Machine({
   type: "parallel",
   states: {
     controlsVisibility: {
-      id: "controls",
+      id: "controlsVisibility",
       initial: "hidden",
       states: {
         visible: {
@@ -78,5 +78,10 @@ fromEvent(document, "mousemove")
 
 state$.subscribe(state => {
   document.getElementById("state").innerHTML = JSON.stringify(state.value)
+  if (state.matches("controlsVisibility.hidden")) {
+    document.querySelector(".controls").classList.add("hidden")
+  } else {
+    document.querySelector(".controls").classList.remove("hidden")
+  }
 });
 

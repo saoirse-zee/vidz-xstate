@@ -1,3 +1,21 @@
 body {
   font-family: sans-serif;
+  margin: 0;
+}
+
+.controls {
+  background: pink;
+  color: white;
+  padding: 30px;
+  transition:
+    transform 500ms,
+    opacity 200ms;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.controls.hidden {
+  transform: translateY(100px);
+  opacity: 0;
 }
