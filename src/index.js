@@ -37,7 +37,7 @@ const uiMachine = Machine({
       states: {
         visible: {
           after: {
-            1000: "hidden"
+            3000: "hidden"
           }
         },
         hidden: {
@@ -82,6 +82,11 @@ state$.subscribe(state => {
     document.querySelector(".controls").classList.add("hidden")
   } else {
     document.querySelector(".controls").classList.remove("hidden")
+  }
+  if (state.matches("controls.playing")) {
+    document.querySelector(".movie").classList.add("play")
+  } else {
+    document.querySelector(".movie").classList.remove("play")
   }
 });
 
