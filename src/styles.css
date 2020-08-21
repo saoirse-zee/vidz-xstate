@@ -13,6 +13,8 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .controls.hidden {
@@ -21,8 +23,6 @@ body {
 }
 
 .movie {
-  /* background:
-    url("http://finalbossblues.com/wp-content/uploads/2013/12/walk4.gif") 0 0 no-repeat; */
   background:
     url("https://image.shutterstock.com/image-vector/girl-walk-cycle-sprite-sheet-260nw-738668026.jpg") 0 0 no-repeat;
   height: 100px;
@@ -41,3 +41,15 @@ body {
     background-position-x: -722px;
   }
 }
+
+#play, #pause {
+  padding: 10px;
+  outline: none;
+  border: none;
+  background: none;
+  transition: opacity 0.2s;
+}
+#play:disabled, #pause:disabled {
+  opacity: 0.3;
+}
+    
