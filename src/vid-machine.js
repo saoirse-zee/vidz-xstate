@@ -1,6 +1,5 @@
 import { Machine, assign } from "xstate";
-
-const video = document.querySelector("video")
+import { pauseMediaPlayer, startMediaPlayer, getCurrentPlayerTime } from "./services"
 
 const controlsVisibilityStates = {
     id: "controlsVisibility",
@@ -24,23 +23,49 @@ const controlsStates = {
     initial: 'paused',
     states: {
         paused: {
-            entry: ['pauseMediaPlayer'],
             on: {
                 press_play: {
-                    target: 'playing',
+                    target: 'startMediaPlayer',
                 },
                 keydown: {
-                    target: 'playing',
+                    target: 'startMediaPlayer',
                     cond: 'isSpacebar'
                 }
             }
         },
+        pauseMediaPlayer: {
+            invoke: {
+                id: "pauseMediaPlayer",
+                src: "pauseMediaPlayer",
+                onDone: {
+                    target: "paused",
+                    actions: () => { console.log("pausing!");}
+                },
+                onError: {
+                    target: "paused",
+                    actions: console.error
+                }
+            },
+        },
+        startMediaPlayer: {
+            invoke: {
+                id: "startMediaPlayer",
+                src: "startMediaPlayer",
+                onDone: {
+                    target: "playing",
+                    actions: () => { console.log("starting!");}
+                },
+                onError: {
+                    target: "paused",
+                    actions: console.error
+                }
+            },
+        },
         playing: {
-            entry: ['startMediaPlayer'],
             on: {
-                press_pause: 'paused',
+                press_pause: 'pauseMediaPlayer',
                 keydown: {
-                    target: 'paused',
+                    target: 'pauseMediaPlayer',
                     cond: 'isSpacebar'
                 },
                 update_position: {
@@ -71,32 +96,12 @@ export const videoMachine = Machine({
     }
 },
     {
-        actions: {
-            startMediaPlayer: () => {
-                video.play()
-            },
-            pauseMediaPlayer: () => {
-                video.pause()
-            },
-        },
         services: {
-            getCurrentPlayerTime: () => (callback, onReceive) => {
-                // Query the player for the current position every 100ms
-                const id = setInterval(() => {
-                    const position = video.currentTime
-                    // Update the machine's context with the new position
-                    callback({
-                        type: "update_position",
-                        position
-                    })
-                }, 100);
-
-                // Perform cleanup
-                return () => clearInterval(id);
-            }
+            pauseMediaPlayer,
+            startMediaPlayer,
+            getCurrentPlayerTime,
         },
         guards: {
             isSpacebar: (ctx, event) => event.code === "Space"
         }
     })
-
