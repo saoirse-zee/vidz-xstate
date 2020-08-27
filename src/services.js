@@ -25,22 +25,24 @@ export const startMediaPlayer = () => {
     })
 }
 
-export const getCurrentPlayerTime = () => {
-    return new Observable((subscriber) => {
-        setInterval(() => {
-            let position
-            try {
-                position = video.currentTime
-                subscriber.next({
-                    type: "update_position",
-                    position
-                })
-            } catch (error) {
-                subscriber.next({
-                    type: "error",
-                    message: error.message
-                })
-            }
-        }, 100)
-    })
+const getNum = () => {
+    let position
+    try {
+        position = video.currentTime
+        return ({
+            type: "update_position",
+            position
+        })
+    } catch (error) {
+        return ({
+            type: "error",
+            message: error.message
+        })
+    }
 }
+
+export const getCurrentPlayerTime = interval(500)
+    .pipe(
+        map(getNum),
+        // tap(console.log)
+    )
