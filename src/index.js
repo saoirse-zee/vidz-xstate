@@ -3,6 +3,7 @@ import { from, fromEvent } from 'rxjs';
 import { videoMachine } from "./vid-machine"
 import "./styles.css";
 
+// Hook up the state machine
 const service = interpret(videoMachine)
 const state$ = from(service);
 service
@@ -12,6 +13,8 @@ service
   })
   .start();
 
+
+// Handle events
 fromEvent(document.getElementById("play"), 'click').subscribe(() => {
   service.send("press_play")
 });
@@ -28,6 +31,8 @@ fromEvent(document, "mousemove")
     service.send(e)
   })
 
+
+// Update the UI
 state$.subscribe(state => {
   const formattedTime = Math.floor(state.context.position)
   document.getElementById("playhead-position").innerHTML = JSON.stringify(formattedTime)

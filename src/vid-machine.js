@@ -1,4 +1,4 @@
-import { Machine, interpret, assign } from "xstate";
+import { Machine, assign } from "xstate";
 
 const video = document.querySelector("video")
 
@@ -66,7 +66,7 @@ export const videoMachine = Machine({
         controls: controlsStates
     },
     invoke: {
-        id: 'incInterval',
+        id: "playerTime",
         src: "getCurrentPlayerTime"
     }
 },

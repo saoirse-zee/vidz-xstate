@@ -2,14 +2,14 @@
 <html>
 
 <head>
-	<title>Parcel Sandbox</title>
+	<title>Video machine</title>
 	<meta charset="UTF-8" />
 </head>
 
 <body>
 	<div class="player">
-		<video
-			width="100%"
+		<div id="playhead-position"></div>
+		<video width="100%"
 			src="https://mdn.github.io/learning-area/html/multimedia-and-embedding/video-and-audio-content/rabbit320.mp4"></video>
 		<div class="controls">
 			<button id="play">
@@ -22,7 +22,6 @@
 					</g>
 				</svg>
 			</button>
-			<!-- <button id="play">Play</button> -->
 			<button id="pause">
 				<svg width="15px" height="25px" viewBox="0 0 15 25" version="1.1" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink">
