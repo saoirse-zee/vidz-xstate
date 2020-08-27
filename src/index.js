@@ -29,7 +29,6 @@ fromEvent(document, "mousemove")
   })
 
 state$.subscribe(state => {
-  // document.getElementById("state").innerHTML = JSON.stringify(state.context)
   const formattedTime = Math.floor(state.context.position)
   document.getElementById("playhead-position").innerHTML = JSON.stringify(formattedTime)
   if (state.matches("controlsVisibility.hidden")) {

@@ -10,36 +10,16 @@ body {
   transition:
     transform 500ms,
     opacity 200ms;
-  position: fixed;
-  bottom: 0;
+  position: relative;
+  bottom: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .controls.hidden {
-  transform: translateY(100px);
+  transform: translateY(50px);
   opacity: 0;
-}
-
-.movie {
-  background:
-    url("https://image.shutterstock.com/image-vector/girl-walk-cycle-sprite-sheet-260nw-738668026.jpg") 0 0 no-repeat;
-  height: 100px;
-  width: 80px;
-  background-position-x: 0px;
-  margin: 100px auto;
-}
-.movie.play {
-  animation: move-movie 1s steps(9) infinite;
-}
-@keyframes move-movie {
-  from {
-    background-position-x: 0px;
-  }
-  to {
-    background-position-x: -722px;
-  }
 }
 
 #play, #pause {
@@ -49,6 +29,7 @@ body {
   background: none;
   transition: opacity 0.2s;
 }
+
 #play:disabled, #pause:disabled {
   opacity: 0.3;
 }
