@@ -1,3 +1,6 @@
+import { interval, Observable } from "rxjs"
+import { map } from "rxjs/operators"
+
 const video = document.querySelector("video")
 
 export const pauseMediaPlayer = () => {
@@ -22,17 +25,22 @@ export const startMediaPlayer = () => {
     })
 }
 
-export const getCurrentPlayerTime = () => (callback, onReceive) => {
-    // Query the player for the current position every 100ms
-    const id = setInterval(() => {
-        const position = video.currentTime
-        // Update the machine's context with the new position
-        callback({
-            type: "update_position",
-            position
-        })
-    }, 100);
-
-    // Perform cleanup
-    return () => clearInterval(id);
+export const getCurrentPlayerTime = () => {
+    return new Observable((subscriber) => {
+        setInterval(() => {
+            let position
+            try {
+                position = video.currentTime
+                subscriber.next({
+                    type: "update_position",
+                    position
+                })
+            } catch (error) {
+                subscriber.next({
+                    type: "error",
+                    message: error.message
+                })
+            }
+        }, 100)
+    })
 }
