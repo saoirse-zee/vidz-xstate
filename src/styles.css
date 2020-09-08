@@ -10,8 +10,8 @@ body {
   transition:
     transform 500ms,
     opacity 200ms;
-  position: relative;
-  bottom: 50px;
+  position: absolute;
+  bottom: 0px;
   width: 100%;
   display: flex;
   justify-content: center;
