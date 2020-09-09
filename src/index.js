@@ -64,7 +64,7 @@ state$.subscribe(state => {
     document.querySelector(".controls").classList.remove("hidden")
   }
 
-  if (state.matches("controls.playing")) {
+  if (state.matches("player.playing")) {
     document.querySelector("#play").setAttribute("disabled", true)
     document.querySelector("#pause").removeAttribute("disabled")
   } else {
