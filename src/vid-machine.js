@@ -43,7 +43,7 @@ const playerStates = {
                     id: "duration",
                     src: "getDuration",
                     onDone: {
-                        target: "paused", // Stay in "idle"
+                        target: "paused", 
                         actions: assign((context, event) => {
                             return ({
                                 ...context,
@@ -86,7 +86,6 @@ const playerStates = {
                 }
             }
         },
-        done_seeking: {},
         starting: {
             invoke: {
                 id: "startMediaPlayer",
