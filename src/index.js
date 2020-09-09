@@ -9,8 +9,8 @@ const state$ = from(service);
 service
   .onTransition((state, event) => {
     // console.log(state.context);
-    // console.log(event);
-    console.log(state.value);
+    console.log(event);
+    // console.log(state.value);
   })
   .start();
 
@@ -39,10 +39,19 @@ fromEvent(playerBar, "click").subscribe((e) => {
     position: proportionClicked // 0..1
   })
 })
+fromEvent(document.getElementById("retry"), 'click').subscribe(() => {
+  service.send("retry")
+});
+
+
 
 
 // Update the UI
 state$.subscribe(state => {
+  document.getElementById("error").style.display = "none"
+  if (state.value.player === "error") {
+    document.getElementById("error").style.display = "block"
+  }
   document.getElementById("debug").innerText = state.toStrings().filter(s => s.includes("player.")).join("*")
   const formattedTime = JSON.stringify(Math.floor(state.context.position)) + "/" + state.context.duration
   document.getElementById("playhead-position").innerHTML = formattedTime 

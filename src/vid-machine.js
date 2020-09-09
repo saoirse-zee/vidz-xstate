@@ -33,6 +33,9 @@ const playerStates = {
             ],
         },
         error: {
+            on: {
+                retry: "idle"
+            }
         },
         gettingMetaData: {
             invoke: [

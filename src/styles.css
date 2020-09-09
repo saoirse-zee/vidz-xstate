@@ -64,3 +64,13 @@ body {
   padding: 5px;
   margin: 10px;
 }
+
+#error {
+  background: purple;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 100px;
+  color: white;
+  font-size: 50px;
+}
