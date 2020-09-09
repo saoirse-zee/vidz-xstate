@@ -34,3 +34,8 @@ body {
   opacity: 0.3;
 }
     
+.player-bar {
+  background: hotpink;
+  height: 50px;
+  transition: width 0.2s;
+}

@@ -1,5 +1,5 @@
-import { Machine, assign } from "xstate";
-import { pauseMediaPlayer, startMediaPlayer, getCurrentPlayerTime } from "./services"
+import { Machine, assign, send } from "xstate";
+import { pauseMediaPlayer, startMediaPlayer, getCurrentPlayerTime, getDuration, getReadyState } from "./services"
 
 const controlsVisibilityStates = {
     id: "controlsVisibility",
@@ -18,28 +18,55 @@ const controlsVisibilityStates = {
     }
 }
 
-const controlsStates = {
-    id: 'controlsStates',
-    initial: 'paused',
+const playerStates = {
+    id: 'playerStates',
+    initial: 'idle',
     states: {
+        idle: {
+            invoke: [
+                {
+                    id: "ready",
+                    src: "getReadyState",
+                    onDone: "gettingMetaData"
+                    // TODO: Handle onError: player_not_ready
+                },
+            ],
+        },
+        gettingMetaData: {
+            invoke: [
+                {
+                    id: "duration",
+                    src: "getDuration",
+                    onDone: {
+                        target: "paused", // Stay in "idle"
+                        actions: assign((context, event) => {
+                            return ({
+                                ...context,
+                                duration: event.data.duration
+                            })
+                        })
+                    }
+                },
+            ]
+        },
         paused: {
             on: {
                 press_play: {
-                    target: 'startMediaPlayer',
+                    target: 'starting',
                 },
                 keydown: {
-                    target: 'startMediaPlayer',
+                    target: 'starting',
                     cond: 'isSpacebar'
-                }
+                },
             }
         },
-        pauseMediaPlayer: {
+        starting: {
             invoke: {
-                id: "pauseMediaPlayer",
-                src: "pauseMediaPlayer",
+                id: "startMediaPlayer",
+                src: "startMediaPlayer",
                 onDone: {
-                    target: "paused",
-                    actions: () => { console.log("pausing!");}
+                    target: "playing",
+                    actions: () => { console.log("starting!"); }
                 },
                 onError: {
                     target: "paused",
@@ -47,13 +74,13 @@ const controlsStates = {
                 }
             },
         },
-        startMediaPlayer: {
+        pausing: {
             invoke: {
-                id: "startMediaPlayer",
-                src: "startMediaPlayer",
+                id: "pauseMediaPlayer",
+                src: "pauseMediaPlayer",
                 onDone: {
-                    target: "playing",
-                    actions: () => { console.log("starting!");}
+                    target: "paused",
+                    actions: () => { console.log("pausing!"); }
                 },
                 onError: {
                     target: "paused",
@@ -62,10 +89,11 @@ const controlsStates = {
             },
         },
         playing: {
+            invoke: { id: "playerTime", src: "getCurrentPlayerTime" },
             on: {
-                press_pause: 'pauseMediaPlayer',
+                press_pause: 'pausing',
                 keydown: {
-                    target: 'pauseMediaPlayer',
+                    target: 'pausing',
                     cond: 'isSpacebar'
                 },
                 update_position: {
@@ -84,24 +112,25 @@ export const videoMachine = Machine({
     id: "video",
     type: "parallel",
     context: {
+        duration: null,
+        readyState: null,
         position: 0
     },
     states: {
         controlsVisibility: controlsVisibilityStates,
-        controls: controlsStates
+        player: playerStates
     },
-    invoke: {
-        id: "playerTime",
-        src: "getCurrentPlayerTime"
-    }
 },
     {
         services: {
             pauseMediaPlayer,
             startMediaPlayer,
             getCurrentPlayerTime,
+            getDuration,
+            getReadyState
         },
         guards: {
             isSpacebar: (ctx, event) => event.code === "Space"
         }
-    })
+    }
+)

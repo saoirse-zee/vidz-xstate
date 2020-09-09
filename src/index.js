@@ -34,13 +34,17 @@ fromEvent(document, "mousemove")
 
 // Update the UI
 state$.subscribe(state => {
-  const formattedTime = Math.floor(state.context.position)
-  document.getElementById("playhead-position").innerHTML = JSON.stringify(formattedTime)
+  const formattedTime = JSON.stringify(Math.floor(state.context.position)) + "/" + state.context.duration
+  document.getElementById("playhead-position").innerHTML = formattedTime 
+  const playerPercentage = state.context.position / state.context.duration * 100
+  document.querySelector(".player-bar").style.width = `${playerPercentage}%`
+
   if (state.matches("controlsVisibility.hidden")) {
     document.querySelector(".controls").classList.add("hidden")
   } else {
     document.querySelector(".controls").classList.remove("hidden")
   }
+
   if (state.matches("controls.playing")) {
     document.querySelector("#play").setAttribute("disabled", true)
     document.querySelector("#pause").removeAttribute("disabled")
