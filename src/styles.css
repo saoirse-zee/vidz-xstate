@@ -7,9 +7,7 @@ body {
   background: pink;
   color: white;
   padding: 30px;
-  transition:
-    transform 500ms,
-    opacity 200ms;
+  transition: transform 500ms, opacity 200ms;
   position: absolute;
   bottom: 0px;
   width: 100%;
@@ -33,7 +31,7 @@ body {
 #play:disabled, #pause:disabled {
   opacity: 0.3;
 }
-    
+
 .player-bar {
   width: 100vw;
   background: lightblue;
@@ -43,4 +41,15 @@ body {
   background: hotpink;
   height: 50px;
   transition: width 0.2s;
+}
+
+#playhead-position {
+  position: relative;
+  top: 16px;
+  left: 50%;
+  height: 0;
+  color: white;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: 700;
 }
