@@ -34,7 +34,7 @@ body {
 
 .player-bar {
   width: 100vw;
-  background: lightblue;
+  background: pink;
 }
 
 .progress {
@@ -52,4 +52,15 @@ body {
   font-family: monospace;
   font-size: 20px;
   font-weight: 700;
+}
+
+#debug {
+  position: absolute;
+  z-index: 1000;
+  font-size: 40px;
+  color: pink;
+  background: black;
+  font-family: monospace;
+  padding: 5px;
+  margin: 10px;
 }

@@ -27,10 +27,12 @@ const playerStates = {
                 {
                     id: "ready",
                     src: "getReadyState",
-                    onDone: "gettingMetaData"
-                    // TODO: Handle onError: player_not_ready
+                    onDone: "gettingMetaData",
+                    onError: "error"
                 },
             ],
+        },
+        error: {
         },
         gettingMetaData: {
             invoke: [

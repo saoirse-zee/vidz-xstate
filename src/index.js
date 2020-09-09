@@ -43,6 +43,7 @@ fromEvent(playerBar, "click").subscribe((e) => {
 
 // Update the UI
 state$.subscribe(state => {
+  document.getElementById("debug").innerText = state.toStrings().filter(s => s.includes("player.")).join("*")
   const formattedTime = JSON.stringify(Math.floor(state.context.position)) + "/" + state.context.duration
   document.getElementById("playhead-position").innerHTML = formattedTime 
   const playerPercentage = state.context.position / state.context.duration * 100
