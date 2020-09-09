@@ -73,3 +73,12 @@ export const getReadyState = () => new Promise((resolve, reject) => {
         reject("player_not_ready")
     }, 100)
 })
+
+export const seek = time => new Promise((resolve, reject) => {
+    try {
+        video.currentTime = time
+        resolve(time)
+    } catch (error) {
+        reject(error)
+    }
+})

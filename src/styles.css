@@ -35,6 +35,11 @@ body {
 }
     
 .player-bar {
+  width: 100vw;
+  background: lightblue;
+}
+
+.progress {
   background: hotpink;
   height: 50px;
   transition: width 0.2s;

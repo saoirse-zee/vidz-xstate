@@ -10,6 +10,7 @@ service
   .onTransition((state, event) => {
     // console.log(state.context);
     // console.log(event);
+    console.log(state.value);
   })
   .start();
 
@@ -30,6 +31,14 @@ fromEvent(document, "mousemove")
   .subscribe((e) => {
     service.send(e)
   })
+const playerBar = document.querySelector(".player-bar")
+fromEvent(playerBar, "click").subscribe((e) => {
+  const proportionClicked = e.offsetX / playerBar.getBoundingClientRect().width
+  service.send({
+    type: "playerbar_clicked",
+    position: proportionClicked // 0..1
+  })
+})
 
 
 // Update the UI
@@ -37,7 +46,7 @@ state$.subscribe(state => {
   const formattedTime = JSON.stringify(Math.floor(state.context.position)) + "/" + state.context.duration
   document.getElementById("playhead-position").innerHTML = formattedTime 
   const playerPercentage = state.context.position / state.context.duration * 100
-  document.querySelector(".player-bar").style.width = `${playerPercentage}%`
+  document.querySelector(".progress").style.width = `${playerPercentage}%`
 
   if (state.matches("controlsVisibility.hidden")) {
     document.querySelector(".controls").classList.add("hidden")

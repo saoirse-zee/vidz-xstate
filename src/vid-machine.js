@@ -1,5 +1,5 @@
 import { Machine, assign, send } from "xstate";
-import { pauseMediaPlayer, startMediaPlayer, getCurrentPlayerTime, getDuration, getReadyState } from "./services"
+import { pauseMediaPlayer, startMediaPlayer, getCurrentPlayerTime, getDuration, getReadyState, seek } from "./services"
 
 const controlsVisibilityStates = {
     id: "controlsVisibility",
@@ -58,8 +58,30 @@ const playerStates = {
                     target: 'starting',
                     cond: 'isSpacebar'
                 },
+                playerbar_clicked: "seeking"
             }
         },
+        seeking: {
+            invoke: {
+                id: 'seek',
+                src: (context, event) => (callback, onReceive) => {
+                    const newTime = event.position * context.duration
+                    seek(newTime).then(d => {
+                        callback({
+                            type: "success",
+                            position: d
+                        })
+                    })
+                }
+            },
+            on: {
+                success: { 
+                    target: "paused",
+                    actions: assign({ position: (c, e) => e.position })
+                }
+            }
+        },
+        done_seeking: {},
         starting: {
             invoke: {
                 id: "startMediaPlayer",
@@ -127,7 +149,8 @@ export const videoMachine = Machine({
             startMediaPlayer,
             getCurrentPlayerTime,
             getDuration,
-            getReadyState
+            getReadyState,
+            seek
         },
         guards: {
             isSpacebar: (ctx, event) => event.code === "Space"
