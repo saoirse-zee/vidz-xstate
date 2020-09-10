@@ -59,9 +59,8 @@ const playerStates = {
                 press_play: {
                     target: 'starting',
                 },
-                keydown: {
+                press_spacebar: {
                     target: 'starting',
-                    cond: 'isSpacebar'
                 },
                 playerbar_clicked: "seeking"
             }
@@ -118,9 +117,8 @@ const playerStates = {
             invoke: { id: "playerTime", src: "getCurrentPlayerTime" },
             on: {
                 press_pause: 'pausing',
-                keydown: {
+                press_spacebar: {
                     target: 'pausing',
-                    cond: 'isSpacebar'
                 },
                 update_position: {
                     target: "playing",
@@ -156,8 +154,5 @@ export const videoMachine = Machine({
             getReadyState,
             seek
         },
-        guards: {
-            isSpacebar: (ctx, event) => event.code === "Space"
-        }
     }
 )

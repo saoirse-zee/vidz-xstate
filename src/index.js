@@ -9,7 +9,7 @@ const state$ = from(service);
 service
   .onTransition((state, event) => {
     // console.log(state.context);
-    console.log(event);
+    // console.log(event);
     // console.log(state.value);
   })
   .start();
@@ -25,7 +25,10 @@ fromEvent(document.getElementById("pause"), 'click').subscribe(() => {
 
 fromEvent(document, "keydown")
   .subscribe((e) => {
-    service.send(e)
+    if (e.code === "Space") {
+      e.preventDefault() // Prevent screen from scrolling
+      service.send("press_spacebar")
+    }
   })
 fromEvent(document, "mousemove")
   .subscribe((e) => {
